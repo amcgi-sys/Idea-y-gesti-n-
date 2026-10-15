@@ -7,9 +7,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role { ADMIN ADVISOR CLIENT }
-enum DocumentStatus { PENDING REVIEWED ACCEPTED REJECTED }
-enum Priority { LOW MEDIUM HIGH }
+enum Role {
+  ADMIN
+  ADVISOR
+  CLIENT
+}
+
+enum DocumentStatus {
+  PENDING
+  REVIEWED
+  ACCEPTED
+  REJECTED
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
 
 model User {
   id        String   @id @default(cuid())
