@@ -18,7 +18,7 @@ export default function LoginPage() {
   }
   return <main className="login-page">
     <div className="login-panel">
-      <a className="login-logo" href="/"><img src={ideaGestionLogo} alt="Idea Gestión" /></a>
+      <a href="/" style={{ display: "block", width: "min(310px, 70%)" }}><img src={ideaGestionLogo} alt="Idea Gestión" style={{ display: "block", width: "100%", borderRadius: 18, boxShadow: "0 18px 50px rgba(8,43,54,.12)" }} /></a>
       <div className="login-copy">
         <p className="eyebrow">ÁREA CLIENTE</p>
         <h1>Tu gestoría,<br/><em>siempre contigo.</em></h1>
@@ -28,7 +28,7 @@ export default function LoginPage() {
     </div>
     <section className="login-form">
       <div className="form-box">
-        <img className="login-mobile-logo" src={ideaGestionLogo} alt="Idea Gestión" />
+        <img src={ideaGestionLogo} alt="Idea Gestión" style={{ display: "block", width: 190, marginBottom: 28, borderRadius: 12 }} />
         <p className="eyebrow">PORTAL DE CLIENTE</p><h2>Bienvenido</h2><p className="form-muted">Accede a tu área privada.</p>
         <form onSubmit={submit}>
           <label>Correo electrónico<input name="email" type="email" placeholder="tu@email.com" required /></label>
