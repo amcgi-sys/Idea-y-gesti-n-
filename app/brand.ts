@@ -1,0 +1,1 @@
+export const ideaGestionLogo = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAACgCAIAAAD...";
