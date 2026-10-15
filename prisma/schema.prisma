@@ -27,30 +27,55 @@ enum Priority {
 }
 
 model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  name          String
+  passwordHash  String?
+  role          Role           @default(CLIENT)
+  clientId      String?
+  client        Client?        @relation(fields: [clientId], references: [id])
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  messages      Message[]
+  audits        AuditLog[]
+  sessions      Session[]
+  notifications Notification[]
+}
+
+model Session {
   id        String   @id @default(cuid())
-  email     String   @unique
-  name      String
-  role      Role     @default(CLIENT)
-  clientId  String?
-  client    Client?  @relation(fields: [clientId], references: [id])
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  messages  Message[]
-  audits    AuditLog[]
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  body      String
+  readAt    DateTime?
+  createdAt DateTime @default(now())
+  @@index([userId, createdAt])
 }
 
 model Client {
-  id           String      @id @default(cuid())
-  legalName    String
-  taxId        String?     @unique
-  email        String?
-  phone        String?
-  active       Boolean     @default(true)
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-  users        User[]
+  id          String      @id @default(cuid())
+  legalName   String
+  taxId       String?     @unique
+  email       String?
+  phone       String?
+  active      Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  users       User[]
   documents   Document[]
-  tasks        Task[]
+  tasks       Task[]
   messages    Message[]
   events      Event[]
 }
@@ -65,6 +90,7 @@ model Document {
   storageKey  String
   uploadedAt  DateTime       @default(now())
   reviewedAt  DateTime?
+  @@index([clientId, status])
 }
 
 model Task {
@@ -77,6 +103,7 @@ model Task {
   priority    Priority  @default(MEDIUM)
   completed   Boolean   @default(false)
   createdAt   DateTime  @default(now())
+  @@index([clientId, completed, dueAt])
 }
 
 model Message {
@@ -88,6 +115,7 @@ model Message {
   body      String
   readAt    DateTime?
   createdAt DateTime @default(now())
+  @@index([clientId, createdAt])
 }
 
 model Event {
@@ -99,6 +127,7 @@ model Event {
   endsAt    DateTime?
   location  String?
   createdAt DateTime @default(now())
+  @@index([clientId, startsAt])
 }
 
 model AuditLog {
@@ -110,4 +139,5 @@ model AuditLog {
   entityId  String?
   metadata  Json?
   createdAt DateTime @default(now())
+  @@index([userId, createdAt])
 }
